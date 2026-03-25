@@ -1,5 +1,6 @@
 import { getOidcSession } from "../utils/oidc-session";
 import { Role } from "~~/prisma/generated/enums";
+import { prisma } from "~~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
 	try {
@@ -22,7 +23,11 @@ export default defineEventHandler(async (event) => {
 					email: session.user.email,
 					name: session.user.name,
 					firstName: session.user.name?.split(" ")[0],
-					lastName: session.user.name?.split(" ").slice(1).join(" ").toUpperCase(),
+					lastName: session.user.name
+						?.split(" ")
+						.slice(1)
+						.join(" ")
+						.toUpperCase(),
 					username:
 						session.user.username ||
 						session.user.email?.split("@")[0],
