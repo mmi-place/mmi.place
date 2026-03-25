@@ -15,8 +15,7 @@ model User {
   firstName String?
   lastName  String?
   role      Role    @default(STUDENT)
-  tool      Tool?   @relation(fields: [toolId], references: [id])
-  toolId    Int?
+  tools     Tool[]
 }
 
 model Tool {
