@@ -1,0 +1,95 @@
+generator client {
+  provider = "prisma-client"
+  output   = "./generated"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        Int     @id @default(autoincrement())
+  email     String? @unique
+  username  String? @unique
+  name      String?
+  firstName String?
+  lastName  String?
+  role      Role    @default(STUDENT)
+  tool      Tool?   @relation(fields: [toolId], references: [id])
+  toolId    Int?
+}
+
+model Tool {
+  id          Int      @id @default(autoincrement())
+  name        String   @unique
+  category    Category
+  url         String
+  source      String?
+  description String?
+  emoji       String?
+  icon        String?
+  authors     User[]
+}
+
+model Redirect {
+  id        Int    @id @default(autoincrement())
+  shortName String @unique
+  name      String
+  url       String
+}
+
+model Channel {
+  id          Int       @id @default(autoincrement())
+  title       String    @unique
+  description String
+  createdAt   DateTime  @default(now())
+  messages    Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  title     String
+  content   String
+  createdAt DateTime @default(now())
+  channel   Channel  @relation(fields: [channelId], references: [id])
+  channelId Int
+  buttons   Json[]
+}
+
+model Course {
+  uid       String    @id
+  type      String?
+  summary   String?
+  startDate DateTime?
+  endDate   DateTime?
+  teachers  String[]
+  location  String?
+  module    String?
+}
+
+model Action {
+  id           Int        @id @default(autoincrement())
+  actionType   ActionType
+  actionTarget String
+  createdAt    DateTime   @default(now())
+}
+
+enum Role {
+  STUDENT // Niveau le plus bas, accès aux infos du style IP minecraft, planning, etc
+  CONTRIBUTOR // Peut ajouter des outils uniquement
+  MANAGER // Peut gérer les outils et publier des messages
+  ADMIN // Niveau le plus haut, accès à toutes les fonctionnalités
+}
+
+enum ActionType {
+  LOAD
+  TOOL
+  MESSAGE
+  LINK
+}
+
+enum Category {
+  STUDENTS
+  OFFICIAL
+  RESOURCE
+}

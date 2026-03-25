@@ -1,0 +1,96 @@
+@import url("https://fonts.googleapis.com/css2?family=SN+Pro:ital,wght@0,200..900;1,200..900&display=swap");
+
+@import url("colors.css");
+@import url("typography.css");
+@import "tailwindcss";
+
+@theme {
+	--color-subtext: #80868f;
+
+	--color-primary: var(--clr-primary);
+	--color-primary-hover: var(--clr-primary-hover);
+	--color-primary-transparent: var(--clr-primary-transparent);
+	--color-primary-transparent-hover: var(--clr-primary-transparent-hover);
+	--color-on-primary: #ffffff;
+	--color-on-primary-transparent: var(--clr-on-primary-transparent);
+
+	--color-danger: #ff0040;
+	--color-danger-hover: #eb003b;
+	--color-on-danger: #ffffff;
+
+	--color-success: #1eca68;
+	--color-success-hover: #1bb95f;
+	--color-on-success: #ffffff;
+
+	--color-button: var(--clr-button);
+	--color-button-hover: var(--clr-button-hover);
+	--color-button-border: var(--clr-button-border);
+	--color-on-button: var(--clr-on-button);
+
+	--color-surface: var(--clr-surface);
+	--color-surface-border: var(--clr-surface-border);
+	--color-on-surface: var(--clr-on-surface);
+
+	--color-popup: var(--clr-popup);
+	--color-popup-border: var(--clr-popup-border);
+	--color-on-popup: var(--clr-on-popup);
+
+	--font-sans: var(--font-sans);
+
+	--text-xs: calc(var(--txt-base) * 0.75);
+	--text-sm: calc(var(--txt-base) * 0.875);
+	--text-base: var(--txt-base);
+	--text-lg: calc(var(--txt-base) * 1.125);
+	--text-xl: calc(var(--txt-base) * 1.25);
+	--text-2xl: calc(var(--txt-base) * 1.5);
+	--text-3xl: calc(var(--txt-base) * 2);
+	--text-4xl: calc(var(--txt-base) * 3);
+	--text-5xl: calc(var(--txt-base) * 4);
+}
+
+* {
+	@apply transition-colors duration-500;
+}
+
+@media (prefers-reduced-motion: reduce) {
+	* {
+		animation: none !important;
+	}
+}
+
+:root body {
+	@apply bg-linear-to-bl
+		from-[#AA00FF]/15
+		via-[#0037FF]/15
+		to-[#00FF84]/15
+		min-h-screen;
+
+	@apply text-[#30363f];
+
+	font-size: var(--text-base);
+}
+
+:root.theme-dark {
+	@apply bg-zinc-950;
+}
+
+:root.theme-dark body {
+	@apply bg-linear-to-bl
+		from-[#AA00FF]/5
+		via-[#0037FF]/5
+		to-[#00FF84]/5;
+
+	@apply text-[#f0f6ff];
+}
+
+#__nuxt {
+	@apply flex
+		flex-col
+		items-center
+		justify-start
+		gap-y-6
+		p-6
+		w-full
+		min-h-screen
+		sm:p-8;
+}
