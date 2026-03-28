@@ -2,6 +2,9 @@
   "name": "mmi-place",
   "type": "module",
   "private": true,
+  "engines": {
+    "node": ">=22.5.0"
+  },
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

@@ -2,9 +2,20 @@
 import { ChevronDoubleRightIcon } from "@heroicons/vue/24/outline";
 
 const route = useRoute();
-const { data: page } = await useAsyncData(route.path, () => {
-	return queryCollection("content").path(route.path).first();
+const normalizedPath = computed(() => {
+	if (route.path !== "/" && route.path.endsWith("/")) {
+		return route.path.slice(0, -1);
+	}
+
+	return route.path;
 });
+
+const { data: page } = await useAsyncData(
+	() => `content:${normalizedPath.value}`,
+	() => {
+		return queryCollection("content").path(normalizedPath.value).first();
+	},
+);
 
 const ariane: Record<string, string> = {
 	blog: "Blog",
@@ -38,9 +49,7 @@ const breadcrumbItems = computed(() => {
 </script>
 <template>
 	<header class="container px-4 md:px-8">
-		<nav
-			aria-label="Fil d'ariane"
-		>
+		<nav aria-label="Fil d'ariane">
 			<ol class="flex flex-wrap items-center gap-2">
 				<li>
 					<Button

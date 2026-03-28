@@ -6,6 +6,11 @@ export default defineNuxtConfig({
 	devtools: { enabled: true },
 	css: ["./app/assets/css/main.css"],
 	modules: ["motion-v/nuxt", "@vite-pwa/nuxt", "@nuxt/content"],
+	content: {
+		experimental: {
+			sqliteConnector: "native",
+		},
+	},
 	runtimeConfig: {
 		authSessionSecret: process.env.AUTHENTIK_SESSION_SECRET, // Must be at least 16 characters
 		authentik: {
