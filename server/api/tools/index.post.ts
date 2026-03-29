@@ -1,5 +1,5 @@
 import { Category } from "~~/prisma/generated/enums";
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 type ToolBody = {
 	password?: string;
@@ -15,6 +15,7 @@ type ToolBody = {
 const allowedCategories = Object.values(Category);
 
 export default defineEventHandler(async (event) => {
+	const prisma = client();
 	const session = getOidcSession(event);
 
 	if (!session) {

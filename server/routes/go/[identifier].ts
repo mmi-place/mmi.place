@@ -1,7 +1,8 @@
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
 	const token = event.context.params?.identifier;
+	const prisma = client();
 
 	if (!token) {
 		return;

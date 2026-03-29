@@ -5,7 +5,7 @@ import {
 	clearOidcTransientCookies,
 	setOidcSession,
 } from "../../utils/oidc-session";
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 type TokenResponse = {
 	access_token?: string;
@@ -27,6 +27,7 @@ function normalizeBaseUrl(value: string) {
 
 export default defineEventHandler(async (event) => {
 	try {
+		const prisma = client();
 		const config = useRuntimeConfig();
 		const openidConfig = config.openid || config.authentik;
 

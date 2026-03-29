@@ -1,7 +1,8 @@
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
 	const session = getOidcSession(event);
+	const prisma = client();
 
 	if (!session) {
 		throw createError({
@@ -21,8 +22,7 @@ export default defineEventHandler(async (event) => {
 		});
 	}
 
-	const { title, content, buttons } =
-		await readBody(event);
+	const { title, content, buttons } = await readBody(event);
 
 	if (!title || !content || !event.context.params?.channel) {
 		throw createError({

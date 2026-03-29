@@ -1,6 +1,7 @@
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
+	const prisma = client();
 	const messages = await prisma.message.findMany({
 		where: {
 			channel: {

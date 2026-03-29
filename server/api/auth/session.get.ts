@@ -1,6 +1,6 @@
 import { getOidcSession } from "../../utils/oidc-session";
 import { Role } from "~~/prisma/generated/enums";
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 export default defineEventHandler(async (event) => {
 	try {
@@ -12,6 +12,7 @@ export default defineEventHandler(async (event) => {
 		setResponseHeader(event, "Pragma", "no-cache");
 		setResponseHeader(event, "Expires", "0");
 
+		const prisma = client();
 		const session = getOidcSession(event);
 
 		if (!session) {

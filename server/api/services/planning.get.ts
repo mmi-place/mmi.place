@@ -1,4 +1,4 @@
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 import type { Course as EditedCourse } from "~~/prisma/generated/client";
 
 import { Timetable } from "celcat";
@@ -22,6 +22,7 @@ const groups: Record<string, string> = {
 };
 
 export default defineEventHandler(async (event) => {
+	const prisma = client();
 	const { group, start, end } = getQuery(event);
 
 	if (!group || typeof group !== "string") {
@@ -44,16 +45,18 @@ export default defineEventHandler(async (event) => {
 
 	const courses = await prisma.course.findMany();
 
-	const editedCourses: EditedCourse[] = courses.map((course: EditedCourse) => ({
-		uid: course.uid,
-		type: course.type,
-		summary: course.summary,
-		startDate: course.startDate,
-		endDate: course.endDate,
-		teachers: course.teachers,
-		location: course.location,
-		module: course.module,
-	}));
+	const editedCourses: EditedCourse[] = courses.map(
+		(course: EditedCourse) => ({
+			uid: course.uid,
+			type: course.type,
+			summary: course.summary,
+			startDate: course.startDate,
+			endDate: course.endDate,
+			teachers: course.teachers,
+			location: course.location,
+			module: course.module,
+		}),
+	);
 
 	const ogCourses = await tt.getTimetable(
 		groupId,
@@ -66,9 +69,7 @@ export default defineEventHandler(async (event) => {
 	ogCourses.forEach((course) => {
 		if (course.start < new Date()) return;
 
-		const editedCourse = editedCourses.find(
-			(ec) => ec.uid === course.uid,
-		);
+		const editedCourse = editedCourses.find((ec) => ec.uid === course.uid);
 
 		result.push({
 			uid: course.uid,

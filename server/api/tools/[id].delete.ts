@@ -1,10 +1,11 @@
-import { prisma } from "~~/server/utils/db";
+import { prisma as client } from "~~/server/utils/db";
 
 type DeleteToolBody = {
 	password?: string;
 };
 
 export default defineEventHandler(async (event) => {
+	const prisma = client();
 	const session = getOidcSession(event);
 
 	if (!session) {
