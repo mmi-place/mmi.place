@@ -3,6 +3,8 @@ import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "./generated/client";
 import type { Category as ToolCategory, Role } from "./generated/enums";
 
+import { initialModules } from "./data/modules";
+
 type SeedAuthor = {
 	username: string;
 	name: string;
@@ -213,6 +215,14 @@ async function main() {
 			where: { email: author.email || "" },
 			update: {},
 			create: author,
+		});
+	}
+
+	for (const _module of initialModules) {
+		await prisma.module.upsert({
+			where: { id: _module.id },
+			update: {},
+			create: _module,
 		});
 	}
 

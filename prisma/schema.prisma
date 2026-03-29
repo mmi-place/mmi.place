@@ -66,6 +66,15 @@ model Course {
   module    String?
 }
 
+model Module {
+  id          String @id
+  celcatID    String @unique
+  name        String
+  shortName   String
+  emoji       String
+  description String
+}
+
 model Action {
   id           Int        @id @default(autoincrement())
   actionType   ActionType

@@ -44,6 +44,7 @@ export default defineEventHandler(async (event) => {
 	const tt = new Timetable(process.env.CELCAT_URL);
 
 	const courses = await prisma.course.findMany();
+	const modules = await prisma.module.findMany();
 
 	const editedCourses: EditedCourse[] = courses.map(
 		(course: EditedCourse) => ({
@@ -74,12 +75,18 @@ export default defineEventHandler(async (event) => {
 		result.push({
 			uid: course.uid,
 			type: editedCourse?.type || course.type,
-			summary: editedCourse?.summary || course.summary,
+			summary:
+				editedCourse?.summary ||
+				modules.find((m) => m.celcatID === course.module)?.name ||
+				course.summary,
 			start: editedCourse?.startDate || course.start,
 			end: editedCourse?.endDate || course.end,
 			teachers: editedCourse?.teachers || course.teachers,
 			location: editedCourse?.location || course.location,
-			module: editedCourse?.module || course.module,
+			module:
+				editedCourse?.module ||
+				modules.find((m) => m.celcatID === course.module)?.id ||
+				course.module,
 		});
 	});
 
