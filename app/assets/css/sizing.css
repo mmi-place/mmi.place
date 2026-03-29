@@ -1,0 +1,16 @@
+:root {
+	--spacing: 0.25rem;
+}
+
+:root.text-medium {
+	--spacing: 0.25rem;
+}
+
+:root.text-small {
+	--spacing: 0.2rem;
+}
+
+:root.text-large {
+	--spacing: 0.3rem;
+}
+
