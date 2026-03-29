@@ -65,7 +65,7 @@ const groupOptions = [
 ];
 
 const sectionOptions = [
-	{ label: "Etudiants", value: "students", style: "neutral" as const },
+	{ label: "Étudiants", value: "students", style: "neutral" as const },
 	{ label: "Officiels", value: "official", style: "neutral" as const },
 	{ label: "Ressources", value: "resource", style: "neutral" as const },
 ];
@@ -185,9 +185,9 @@ watch(
 
 <template>
 	<header class="container flex flex-col items-center gap-4">
-		<h1 class="text-4xl font-bold">Parametres</h1>
+		<h1 class="text-4xl font-bold">Paramètres</h1>
 		<Button
-			label="Reinitialiser les parametres"
+			label="Réinitialiser"
 			btnStyle="DANGER"
 			:handler="resetSettings"
 		/>
@@ -225,7 +225,7 @@ watch(
 
 	<main v-if="tab === 'appearence'" class="container flex flex-col gap-6">
 		<section class="flex flex-col gap-3">
-			<h2 class="text-2xl font-bold">Theme</h2>
+			<h2 class="text-2xl font-bold">Thème</h2>
 			<div class="flex items-center gap-2">
 				<Select
 					:options="themeOptions"
@@ -247,7 +247,7 @@ watch(
 					"
 				/>
 				<Button
-					label="Contraste eleve"
+					label="Contraste élevé"
 					:btnStyle="
 						settings.appearence.contrast === 'high'
 							? 'SELECTED'
@@ -285,7 +285,7 @@ watch(
 					"
 				/>
 				<Button
-					label="Dyslexic"
+					label="Open Dyslexic"
 					:btnStyle="
 						settings.appearence.text.dyslexia
 							? 'SELECTED'
@@ -344,17 +344,17 @@ watch(
 
 		<section class="flex flex-col gap-3">
 			<h2 class="text-2xl font-bold">Ordre des sections</h2>
-			<div class="flex flex-wrap gap-3">
-				<div class="flex items-center gap-2">
-					<span class="text-subtext">1</span>
+			<div class="flex flex-col gap-2">
+				<div class="flex items-center gap-3">
+					<span class="text-subtext text-right w-8">1</span>
 					<Select :options="sectionOptions" v-model="sectionOrder1" />
 				</div>
-				<div class="flex items-center gap-2">
-					<span class="text-subtext">2</span>
+				<div class="flex items-center gap-3">
+					<span class="text-subtext text-right w-8">2</span>
 					<Select :options="sectionOptions" v-model="sectionOrder2" />
 				</div>
-				<div class="flex items-center gap-2">
-					<span class="text-subtext">3</span>
+				<div class="flex items-center gap-3">
+					<span class="text-subtext text-right w-8">3</span>
 					<Select :options="sectionOptions" v-model="sectionOrder3" />
 				</div>
 			</div>
@@ -406,8 +406,8 @@ watch(
 					"
 				/>
 			</div>
-
-			<div class="flex flex-wrap gap-2">
+			<div class="flex flex-wrap gap-1">
+				<span class="text-subtext w-full">Canaux suivis:</span>
 				<Button
 					v-for="channel in channels"
 					:key="channel.id"
@@ -418,6 +418,19 @@ watch(
 					:handler="() => toggleChannel(channel.id)"
 				/>
 			</div>
+			<Button
+				label="Marquer comme non lus"
+				:btnStyle="
+					settings.widgets.messages.readMessages.length
+						? 'DANGER'
+						: 'NEUTRAL'
+				"
+				:handler="
+					() => {
+						settings.widgets.messages.readMessages = [];
+					}
+				"
+			/>
 		</section>
 
 		<section class="flex flex-col gap-3">
@@ -444,10 +457,11 @@ watch(
 			</div>
 		</section>
 
-		<section class="flex flex-col gap-3">
+		<section class="cursor-not-allowed flex flex-col gap-3">
 			<h2 class="text-2xl font-bold">PlanUP</h2>
 			<div class="flex items-center gap-2">
 				<Button
+					disabled
 					:label="
 						settings.widgets.planup.enabled ? 'Activé' : 'Désactivé'
 					"
@@ -463,6 +477,7 @@ watch(
 				/>
 				<Select
 					:options="groupOptions"
+					disabled
 					v-model="settings.widgets.planup.group"
 				/>
 			</div>
