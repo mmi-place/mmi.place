@@ -14,9 +14,12 @@ const slugSegments = computed(() => {
 	const slug = route.params.slug;
 
 	if (!slug) return [];
-	if (Array.isArray(slug)) return slug;
+	if (Array.isArray(slug)) {
+		slug.unshift("blog");
+		return slug;
+	}
 
-	return [slug];
+	return ['blog', slug];
 });
 
 const breadcrumbItems = computed(() => {
