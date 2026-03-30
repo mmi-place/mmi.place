@@ -6,11 +6,6 @@ definePageMeta({
 		"Bienvenue sur le blog de MMI Place ! Découvrez les dernières actualités, tutoriels et ressources pour les étudiants en MMI. Restez informé et améliorez vos compétences grâce à nos articles rédigés par la communauté.",
 });
 
-import Header from "~/components/layout/Header.vue";
-
-const { fetchTools } = useTools();
-const { fetchMessages } = useMessages();
-const { fetchPlanning } = usePlanning();
 const { settings, applySettings, loadSettings } = useSettings();
 
 onBeforeMount(() => {
