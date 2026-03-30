@@ -1,5 +1,5 @@
 {
-  "name": "mmi-place",
+  "name": "@mmi-place/mmi.place",
   "type": "module",
   "private": true,
   "scripts": {
