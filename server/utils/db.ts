@@ -10,13 +10,13 @@ const poolMax = Number.parseInt(
 	10,
 );
 
-if (!connectionString) {
-	throw new Error(
-		"Missing DATABASE_URL or DATABASE_DIRECT_URL in environment.",
-	);
-}
-
 const prismaClientSingleton = () => {
+	if (!connectionString) {
+		throw new Error(
+			"Missing DATABASE_URL or DATABASE_DIRECT_URL in environment.",
+		);
+	}
+
 	// Keep the pool tiny in serverless environments to avoid exhausting session-mode limits.
 	const pool = new PrismaPg({
 		connectionString,
