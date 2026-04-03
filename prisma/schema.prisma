@@ -76,6 +76,7 @@ model Module {
   shortName   String
   emoji       String
   description String
+  tasks       Task[]
 }
 
 model Action {
@@ -83,6 +84,45 @@ model Action {
   actionType   ActionType
   actionTarget String
   createdAt    DateTime   @default(now())
+}
+
+model Task {
+  id          Int       @id @default(autoincrement())
+  module      Module    @relation(fields: [moduleId], references: [id])
+  moduleId    String
+  title       String
+  description String?
+  groups      Group[]
+  files       Json[]
+  expected    Json[]
+  date        DateTime?
+  deadline    DateTime?
+}
+
+enum Group {
+  // Roles
+  ALL
+
+  STUDENT
+  CONTRIBUTOR
+  MANAGER
+  ADMIN
+
+  // Groupes
+  MMI1_A1
+  MMI1_A2
+  MMI1_B1
+  MMI1_B2
+  MMI2_A1
+  MMI2_A2
+  MMI2_B1
+  MMI2_B2
+  MMI3_DW_FA_A1
+  MMI3_DW_FA_A2
+  MMI3_CN_FA_A1
+  MMI3_CN_FA_A2
+  MMI3_CN_FI_A1
+  MMI3_CN_FI_A2
 }
 
 enum Role {
