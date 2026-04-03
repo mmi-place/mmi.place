@@ -42,7 +42,7 @@ const btnClass = computed(() => {
 
 		if (props.icon) {
 			if (props.label) {
-				base += " w-fit pl-2 pr-4";
+				base += " w-fit pl-4 pr-4";
 			} else {
 				base += " w-11";
 			}
