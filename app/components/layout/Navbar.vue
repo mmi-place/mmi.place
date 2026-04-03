@@ -99,7 +99,7 @@ const goToResult = (tool: any) => {
 			<!-- Search Results Dropdown -->
 			<div
 				v-if="searchOpen && filteredTools.length"
-				class="absolute top-full mt-2 left-0 w-full bg-surface border border-surface-border rounded-2xl shadow-xl overflow-hidden z-50"
+				class="absolute top-full mt-2 left-0 w-full bg-surface backdrop-blur-md border border-surface-border rounded-2xl shadow-xl overflow-hidden z-50"
 			>
 				<button
 					v-for="tool in filteredTools"
