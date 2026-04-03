@@ -8,9 +8,6 @@ export default defineConfig({
 		seed: "tsx ./prisma/seed.ts",
 	},
 	datasource: {
-		// process.env instead of env() so prisma generate doesn't crash
-		// when DATABASE_URL is not set (e.g. during Docker build)
-		url: process.env.DATABASE_URL ?? "",
+		url: process.env.DATABASE_DIRECT_URL ?? process.env.DATABASE_URL ?? "",
 	},
 });
-
