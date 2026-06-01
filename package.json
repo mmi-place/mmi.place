@@ -8,9 +8,17 @@
     "build": "nuxt generate",
     "generate": "nuxt generate",
     "preview": "npx serve .output/public",
+    "cap:add:android": "cap add android",
+    "cap:sync": "npm run build && cap sync",
+    "cap:sync:android": "npm run build && cap sync android",
+    "cap:open:android": "npm run cap:sync:android && cap open android",
+    "cap:run:android": "npm run cap:sync:android && cap run android",
+    "cap:build:android": "node scripts/cap-build-android.mjs",
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@capacitor/android": "^8.3.4",
+    "@capacitor/core": "^8.3.4",
     "@heroicons/vue": "^2.2.0",
     "@mmiplace/mmi-core": "^0.2.4",
     "@tailwindcss/vite": "^4.1.12",
@@ -23,6 +31,8 @@
     "vue-router": "^4.5.1"
   },
   "devDependencies": {
-    "@types/node": "^22.15.21"
+    "@capacitor/cli": "^8.3.4",
+    "@types/node": "^22.15.21",
+    "typescript": "^6.0.3"
   }
 }

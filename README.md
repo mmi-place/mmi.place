@@ -57,6 +57,48 @@ Pour le previsualiser localement :
 npm run preview
 ```
 
+## Application native
+
+Le projet peut aussi etre empaquete avec Capacitor pour Android. La configuration pointe vers le build statique de Nuxt (`.output/public`), donc le meme code source peut servir au web et au mobile.
+
+Configuration supplementaire utile :
+
+```env
+CAPACITOR_APP_ID=place.mmi.app
+CAPACITOR_DEV_SERVER_URL=http://192.168.1.10:3000
+```
+
+La premiere fois, ajoute la plateforme Android :
+
+```bash
+npm run cap:add:android
+```
+
+Ensuite, les commandes utiles sont :
+
+```bash
+npm run cap:sync:android
+npm run cap:open:android
+npm run cap:run:android
+npm run cap:build:android
+```
+
+`cap:build:android` genere un APK de debug via Gradle dans le dossier Android ajoute par Capacitor. Si tu veux aussi un packaging desktop, il faudra ajouter une couche Electron au-dessus du meme `webDir` Capacitor.
+
+Remarques additionnelles:
+
+- Assure-toi d'avoir l'Android SDK installe (via Android Studio ou les outils en ligne de commande). Le script de build automatique tentera de detecter `ANDROID_SDK_ROOT`/`ANDROID_HOME` ou `C:\\Users\\<you>\\AppData\\Local\\Android\\Sdk` et ecrira `android/local.properties` si necessaire.
+- Si l'SDK n'est pas installe, installe Android Studio et configure le SDK, ou definis `ANDROID_SDK_ROOT` avant d'executer `npm run cap:build:android`.
+
+Exemple minimal pour builder localement:
+
+```bash
+# build static web output
+npm run build
+# sync into Android project and build debug APK (the helper will set JAVA_HOME to Android Studio's JBR if present)
+npm run cap:build:android
+```
+
 ## Deploiement
 
 Comme le projet est un site statique, il n'y a pas besoin de Docker.
