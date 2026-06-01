@@ -1,9 +1,12 @@
 import { query } from "@mmiplace/mmi-core";
 
-export type Course = {
+import { Timetable, type Course } from "celcat";
+const tt = new Timetable();
+
+export type DBCourse = {
   id: number;
-  start: string;
-  end: string;
+  start: Date;
+  end: Date;
   module: string;
   summary: string;
   location: string;
@@ -20,15 +23,26 @@ export const usePlanning = () => {
   const fetchPlanning = async () => {
     if (!settings.value.widgets.vencat.group) return;
     loading.value = true;
+
     try {
-      const response = await query<Course>("planning", {
+      const response = await query<DBCourse>("planning", {
         select:
           "id,start:start_at,end:end_at,module,summary,location,teachers,group:group_name",
-        filters: { group_name: settings.value.widgets.vencat.group } as Partial<Course>,
+        filters: { group_name: settings.value.widgets.vencat.group } as Partial<DBCourse>,
         orderBy: "start_at",
         ascending: true,
       });
-      planning.value = response.data ?? [];
+
+      const timetable = await tt.getTimetable(settings.value.widgets.vencat.group, new Date(), new Date(Date.now() + 7 * 24 * 60 * 60 * 1000));
+
+      planning.value = timetable.map(course => {
+        const updated = response.data?.find(c => c.start === course.start && c.end === course.end && c.module === course.module);
+
+        return {
+          ...course,
+          ...updated,
+        };
+      }) ?? [];
     } catch (e) {
       error.value = e as Error;
     } finally {
