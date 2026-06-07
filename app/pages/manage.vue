@@ -136,7 +136,7 @@ const messageButtonStyleOptions = [
 ];
 
 const adminTabs = computed(() => {
-  const tabs = [
+  const tabs: { id: AdminTab; label: string; description: string }[] = [
     { id: "publications" as const, label: "Publications", description: "Canaux, publications et diffusion" },
     { id: "catalogue" as const, label: "Catalogue", description: "Outils et liens mis en avant" },
   ];
@@ -307,7 +307,7 @@ const startMessageEdit = (message: Message) => {
     title: message.title,
     content: message.content,
     channelId: message.channelId,
-    buttons: Array.isArray(message.buttons) ? [...message.buttons] : [],
+    buttons: (Array.isArray(message.buttons) ? [...message.buttons] : []) as ManagedMessageButton[],
     publishAt: toDateTimeLocal(message.publishAt),
     expiresAt: toDateTimeLocal(message.expiresAt),
   };
@@ -498,7 +498,7 @@ watch(
   channels,
   (nextChannels) => {
     if (!messageForm.value.channelId && nextChannels.length) {
-      messageForm.value.channelId = nextChannels[0].id;
+      messageForm.value.channelId = nextChannels[0]!.id;
     }
   },
   { immediate: true },
@@ -537,7 +537,7 @@ onUnmounted(() => {
 
 <template>
   <main class="container mx-auto my-6 flex max-w-7xl flex-col gap-6 lg:gap-8">
-    <div class="flex flex-col gap-3 rounded-[2rem] border border-surface-border bg-surface/90 px-6 py-7 shadow-[0_30px_80px_rgba(2,6,23,0.18)] backdrop-blur-xl lg:px-8">
+    <div class="flex flex-col gap-3 rounded-4xl border border-surface-border bg-surface/90 px-6 py-7 shadow-[0_30px_80px_rgba(2,6,23,0.18)] backdrop-blur-xl lg:px-8">
       <span class="w-fit rounded-full border border-primary/20 bg-primary/10 px-3 py-1 text-xs font-semibold uppercase tracking-[0.2em] text-primary">
         Administration
       </span>
@@ -563,7 +563,7 @@ onUnmounted(() => {
 
     <div
       v-if="session && !canManage"
-      class="rounded-[2rem] border border-danger/25 bg-danger/10 p-8 text-center shadow-[0_24px_80px_rgba(127,29,29,0.25)]"
+      class="rounded-4xl border border-danger/25 bg-danger/10 p-8 text-center shadow-[0_24px_80px_rgba(127,29,29,0.25)]"
     >
       <h2 class="text-3xl font-bold text-danger">Acces refuse</h2>
       <p class="mx-auto mt-3 max-w-xl text-subtext">
@@ -572,11 +572,11 @@ onUnmounted(() => {
     </div>
 
     <template v-else>
-      <section class="grid gap-3 rounded-[2rem] border border-surface-border bg-surface/90 p-3 shadow-[0_28px_90px_rgba(15,23,42,0.18)] backdrop-blur-xl md:grid-cols-3">
+      <section class="grid gap-3 rounded-4xl border border-surface-border bg-surface/90 p-3 shadow-[0_28px_90px_rgba(15,23,42,0.18)] backdrop-blur-xl md:grid-cols-3">
         <button
           v-for="tab in adminTabs"
           :key="tab.id"
-          class="rounded-[1.5rem] border px-5 py-4 text-left transition-all"
+          class="rounded-3xl border px-5 py-4 text-left transition-all"
           :class="activeTab === tab.id ? 'border-primary bg-primary/10 shadow-[0_12px_30px_rgba(34,197,94,0.12)]' : 'border-surface-border bg-popup/70 hover:border-primary/30'"
           @click="activeTab = tab.id"
         >
@@ -586,7 +586,7 @@ onUnmounted(() => {
       </section>
 
       <section v-if="activeTab === 'publications'" class="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <article class="rounded-[2rem] border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
+        <article class="rounded-4xl border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-surface-border/80 pb-5">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Publications</p>
@@ -609,7 +609,7 @@ onUnmounted(() => {
 
             <label class="flex flex-col gap-2">
               <span class="text-sm font-semibold text-subtext">Contenu</span>
-              <textarea v-model="messageForm.content" rows="7" class="w-full rounded-[1.5rem] border border-surface-border bg-popup px-4 py-4 outline-none transition focus:border-primary" placeholder="Redige ici la publication complete..." />
+              <textarea v-model="messageForm.content" rows="7" class="w-full rounded-3xl border border-surface-border bg-popup px-4 py-4 outline-none transition focus:border-primary" placeholder="Redige ici la publication complete..." />
             </label>
 
             <div class="grid gap-4 md:grid-cols-2">
@@ -623,7 +623,7 @@ onUnmounted(() => {
               </label>
             </div>
 
-            <div class="rounded-[1.5rem] border border-surface-border bg-popup/60 p-5">
+            <div class="rounded-3xl border border-surface-border bg-popup/60 p-5">
               <div class="flex items-center justify-between gap-3">
                 <div>
                   <h3 class="text-lg font-semibold">Boutons d'action</h3>
@@ -656,7 +656,7 @@ onUnmounted(() => {
           </div>
         </article>
 
-        <article class="rounded-[2rem] border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
+        <article class="rounded-4xl border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
           <div class="flex items-end justify-between gap-3 border-b border-surface-border/80 pb-5">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.2em] text-sky-300">Historique</p>
@@ -670,7 +670,7 @@ onUnmounted(() => {
           </div>
 
           <div v-else class="mt-6 flex flex-col gap-4">
-            <article v-for="message in managedMessages" :key="message.id" class="rounded-[1.5rem] border border-surface-border bg-popup/60 p-5">
+            <article v-for="message in managedMessages" :key="message.id" class="rounded-3xl border border-surface-border bg-popup/60 p-5">
               <div class="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <h3 class="text-lg font-semibold">{{ message.title }}</h3>
@@ -695,7 +695,7 @@ onUnmounted(() => {
       </section>
 
       <section v-else-if="activeTab === 'catalogue'" class="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <article class="rounded-[2rem] border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
+        <article class="rounded-4xl border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
           <div class="flex flex-wrap items-center justify-between gap-3 border-b border-surface-border/80 pb-5">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Catalogue</p>
@@ -728,7 +728,7 @@ onUnmounted(() => {
 
             <label class="flex flex-col gap-2">
               <span class="text-sm font-semibold text-subtext">Description</span>
-              <textarea v-model="toolForm.description" rows="5" class="rounded-[1.5rem] border border-surface-border bg-popup px-4 py-4 outline-none transition focus:border-primary" placeholder="Resume rapide de l'outil..." />
+              <textarea v-model="toolForm.description" rows="5" class="rounded-3xl border border-surface-border bg-popup px-4 py-4 outline-none transition focus:border-primary" placeholder="Resume rapide de l'outil..." />
             </label>
 
             <div class="grid gap-4 md:grid-cols-2">
@@ -756,7 +756,7 @@ onUnmounted(() => {
           </div>
         </article>
 
-        <article class="rounded-[2rem] border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
+        <article class="rounded-4xl border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
           <div class="flex items-end justify-between gap-3 border-b border-surface-border/80 pb-5">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.2em] text-primary">Catalogue</p>
@@ -770,7 +770,7 @@ onUnmounted(() => {
           </div>
 
           <div v-else class="mt-6 flex flex-col gap-4">
-            <article v-for="tool in managedTools" :key="tool.id" class="rounded-[1.5rem] border border-surface-border bg-popup/60 p-5">
+            <article v-for="tool in managedTools" :key="tool.id" class="rounded-3xl border border-surface-border bg-popup/60 p-5">
               <div class="flex items-start justify-between gap-3">
                 <div>
                   <div class="flex items-center gap-3">
@@ -793,7 +793,7 @@ onUnmounted(() => {
       </section>
 
       <section v-else-if="activeTab === 'users'" class="grid gap-6 xl:grid-cols-[1.2fr_0.8fr]">
-        <article class="rounded-[2rem] border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
+        <article class="rounded-4xl border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
           <div class="flex flex-col gap-4 border-b border-surface-border/80 pb-5 lg:flex-row lg:items-end lg:justify-between">
             <div>
               <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Utilisateurs</p>
@@ -812,7 +812,7 @@ onUnmounted(() => {
             {{ usersError }}
           </div>
 
-          <div class="mt-5 overflow-hidden rounded-[1.5rem] border border-surface-border">
+          <div class="mt-5 overflow-hidden rounded-3xl border border-surface-border">
             <div class="overflow-x-auto">
               <table class="min-w-full divide-y divide-surface-border text-sm">
                 <thead class="bg-popup/80 text-subtext">
@@ -882,7 +882,7 @@ onUnmounted(() => {
           </div>
         </article>
 
-        <article class="rounded-[2rem] border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
+        <article class="rounded-4xl border border-white/10 bg-surface/90 p-6 shadow-[0_28px_90px_rgba(15,23,42,0.25)] backdrop-blur-xl lg:p-8">
           <div class="border-b border-surface-border/80 pb-5">
             <p class="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-300">Fiche compte</p>
             <h2 class="mt-1 text-2xl font-bold">Modification utilisateur</h2>
@@ -894,7 +894,7 @@ onUnmounted(() => {
 
           <template v-else>
             <div class="mt-6 space-y-5">
-              <div class="rounded-[1.5rem] border border-surface-border bg-popup/60 p-5">
+              <div class="rounded-3xl border border-surface-border bg-popup/60 p-5">
                 <p class="text-xs uppercase tracking-[0.18em] text-subtext">Identite</p>
                 <h3 class="mt-2 text-2xl font-bold">{{ selectedUser.prenom }} {{ selectedUser.nom }}</h3>
                 <div class="mt-4 space-y-2 text-sm text-subtext">
@@ -904,21 +904,21 @@ onUnmounted(() => {
                 </div>
               </div>
 
-              <div class="rounded-[1.5rem] border border-surface-border bg-popup/60 p-5">
+              <div class="rounded-3xl border border-surface-border bg-popup/60 p-5">
                 <label class="flex flex-col gap-2">
                   <span class="text-sm font-semibold text-subtext">Role</span>
                   <Select :options="roleOptions" :model-value="selectedUser.role" :handler="(value) => updateSelectedUserRole(value as Role)" />
                 </label>
               </div>
 
-              <div class="rounded-[1.5rem] border border-surface-border bg-popup/60 p-5">
+              <div class="rounded-3xl border border-surface-border bg-popup/60 p-5">
                 <p class="text-sm font-semibold text-subtext">Etat du compte</p>
                 <div class="mt-4 flex flex-wrap gap-3">
                   <Button
                     :label="selectedUser.is_active ? 'Desactiver le compte' : 'Reactiver le compte'"
                     :btnStyle="selectedUser.is_active ? 'DANGER' : 'SUCCESS'"
                     :loading="userActionLoadingId === selectedUser.id"
-                    :handler="() => toggleSelectedUserActiveState(!selectedUser.is_active)"
+                    :handler="() => toggleSelectedUserActiveState(!selectedUser?.is_active)"
                   />
                   <Button
                     label="Supprimer definitivement"

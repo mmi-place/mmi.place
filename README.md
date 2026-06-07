@@ -36,6 +36,30 @@ NUXT_PUBLIC_SUPABASE_ANON_KEY=your_public_anon_key
 
 Les anciennes variables `VITE_SUPABASE_URL` et `VITE_SUPABASE_ANON_KEY` restent acceptees pour compatibilite, mais la config recommandee est `NUXT_PUBLIC_*`.
 
+## API Versionnee
+
+Le projet expose maintenant une API versionnee sous `/api/v1` pour les ressources principales du site.
+
+- `GET /api/v1` : resume des routes disponibles.
+- `GET /api/v1/tools` : liste des outils, avec regroupement `official`, `students` et `resource`.
+- `POST /api/v1/tools` : creation d'un outil.
+- `GET /api/v1/tools/:id`, `PUT /api/v1/tools/:id`, `DELETE /api/v1/tools/:id`.
+- `GET /api/v1/messages` : liste des messages.
+- `POST /api/v1/messages` : publication d'un message.
+- `GET /api/v1/messages/:id`, `PUT /api/v1/messages/:id`, `DELETE /api/v1/messages/:id`.
+- `GET /api/v1/services/vencat/planning?group=...` : emploi du temps Vencat merge avec les donnees de la base.
+- `POST /api/v1/services/vencat/planning` : creation d'un cours Vencat.
+- `GET /api/v1/services/vencat/planning/:id`, `PUT /api/v1/services/vencat/planning/:id`, `DELETE /api/v1/services/vencat/planning/:id`.
+- `GET /api/v1/services/planup/tasks?group=...` : taches PlanUP filtrees par groupe.
+- `POST /api/v1/services/planup/tasks` : creation d'une tache PlanUP.
+- `GET /api/v1/services/planup/tasks/:id`, `PUT /api/v1/services/planup/tasks/:id`, `DELETE /api/v1/services/planup/tasks/:id`.
+
+Le delete Vencat suit le workflow normal et supprime simplement la ligne correspondante dans la table `planning`.
+
+Les routes de modification reutilisent la session Supabase presente dans les cookies, donc elles suivent les droits d'acces existants.
+
+Important : ces routes necessitent un runtime Nuxt/Nitro. La generation statique reste utile pour le front, mais elle ne publie pas les endpoints API.
+
 ## Developpement
 
 ```bash

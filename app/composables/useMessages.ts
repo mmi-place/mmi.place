@@ -1,5 +1,3 @@
-import { insert, query, remove, update } from "@mmiplace/mmi-core";
-
 export type Message = {
   id: number;
   title: string;
@@ -17,19 +15,22 @@ export const useMessages = () => {
   const activeMessageIndex = useState<number>("active-message-index", () => 0);
   const loading = useState<boolean>("messages-loading", () => false);
   const error = useState<Error | null>("messages-error", () => null);
+  const api = useApi();
 
   const fetchMessages = async () => {
     loading.value = true;
     try {
       const channels = settings.value.widgets.messages.channels;
-      const result = await query<Message>("messages", {
-        select:
-          "id,title,content,channelId:channel_id,buttons,createdAt:created_at,publishAt:publish_at,expiresAt:expires_at",
-        orderBy: "created_at",
-        ascending: false,
-      });
-      const data = (result.data ?? []).filter((m) => channels.includes(m.channelId));
-      messages.value = data.filter((message) => !settings.value.widgets.messages.readMessages.includes(message.id));
+      const result = await api.get<{ items: Message[]; count: number }>(
+        "/messages",
+      );
+      const data = (result.items ?? []).filter((m) =>
+        channels.includes(m.channelId),
+      );
+      messages.value = data.filter(
+        (message) =>
+          !settings.value.widgets.messages.readMessages.includes(message.id),
+      );
     } catch (e) {
       error.value = e as Error;
     } finally {
@@ -45,14 +46,7 @@ export const useMessages = () => {
     publishAt?: string;
     expiresAt?: string;
   }) => {
-    await insert<Message>("messages", {
-      title: message.title,
-      content: message.content,
-      channel_id: message.channelId,
-      buttons: message.buttons ?? [],
-      publish_at: message.publishAt ?? null,
-      expires_at: message.expiresAt ?? null,
-    });
+    await api.post<Message>("/messages", message);
   };
 
   const updateMessage = async (
@@ -66,19 +60,21 @@ export const useMessages = () => {
       expiresAt?: string;
     },
   ) => {
-    await update<Message>("messages", String(id), {
-      title: message.title,
-      content: message.content,
-      channel_id: message.channelId,
-      buttons: message.buttons ?? [],
-      publish_at: message.publishAt ?? null,
-      expires_at: message.expiresAt ?? null,
-    });
+    await api.put<Message>(`/messages/${id}`, message);
   };
 
   const deleteMessage = async (id: number) => {
-    await remove("messages", String(id));
+    await api.del<void>(`/messages/${id}`);
   };
 
-  return { messages, activeMessageIndex, loading, error, fetchMessages, publishMessage, updateMessage, deleteMessage };
+  return {
+    messages,
+    activeMessageIndex,
+    loading,
+    error,
+    fetchMessages,
+    publishMessage,
+    updateMessage,
+    deleteMessage,
+  };
 };

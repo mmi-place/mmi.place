@@ -1,5 +1,3 @@
-import { query } from "@mmiplace/mmi-core";
-
 export type Task = {
   id: number;
   moduleId: string;
@@ -32,6 +30,7 @@ export const useTasks = () => {
   const tasks = useState<Task[]>("tasks-data", () => []);
   const loading = useState<boolean>("tasks-loading", () => false);
   const error = useState<Error | null>("tasks-error", () => null);
+  const api = useApi();
 
   const fetchTasks = async () => {
     const group = settings.value.widgets.planup.group;
@@ -43,17 +42,15 @@ export const useTasks = () => {
 
     loading.value = true;
     try {
-      const response = await query<TaskRow>("tasks", {
-        select:
-          "id,moduleId:module_id,title,description,groups,files,expected,date,deadline",
-        orderBy: "deadline",
-        ascending: true,
+      const response = await api.get<{
+        group: string;
+        items: TaskRow[];
+        count: number;
+      }>("/services/planup/tasks", {
+        group,
       });
 
-      const data = (response.data ?? []).map(normalizeTask);
-      tasks.value = data.filter(
-        (task) => task.groups.includes("ALL") || task.groups.includes(group),
-      );
+      tasks.value = (response.items ?? []).map(normalizeTask);
     } catch (caughtError) {
       error.value = caughtError as Error;
     } finally {
