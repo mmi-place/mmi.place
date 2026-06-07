@@ -2,7 +2,9 @@ import tailwindcss from "@tailwindcss/vite";
 
 const env = process.env;
 const siteName = env.NUXT_PUBLIC_SITE_NAME || "MMI Place";
-const siteDescription = env.NUXT_PUBLIC_SITE_DESCRIPTION || "La plateforme communautaire pour les etudiants MMI.";
+const siteDescription =
+  env.NUXT_PUBLIC_SITE_DESCRIPTION ||
+  "La plateforme communautaire pour les etudiants MMI.";
 const siteUrl = env.NUXT_PUBLIC_SITE_URL || "http://localhost:3000";
 const siteBasePath = (() => {
   try {
@@ -12,6 +14,7 @@ const siteBasePath = (() => {
     return "/";
   }
 })();
+const apiBasePath = siteBasePath === "/" ? "/api/v1" : `${siteBasePath}/api/v1`;
 
 export default defineNuxtConfig({
   compatibilityDate: "2025-07-15",
@@ -24,8 +27,10 @@ export default defineNuxtConfig({
       siteName,
       siteDescription,
       siteUrl,
+      apiBaseUrl: apiBasePath,
       supabaseUrl: env.NUXT_PUBLIC_SUPABASE_URL || env.VITE_SUPABASE_URL || "",
-      supabaseAnonKey: env.NUXT_PUBLIC_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || "",
+      supabaseAnonKey:
+        env.NUXT_PUBLIC_SUPABASE_ANON_KEY || env.VITE_SUPABASE_ANON_KEY || "",
     },
   },
   vite: {
@@ -52,7 +57,10 @@ export default defineNuxtConfig({
         },
         { name: "theme-color", content: "#0f172a" },
         { name: "apple-mobile-web-app-capable", content: "yes" },
-        { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },
+        {
+          name: "apple-mobile-web-app-status-bar-style",
+          content: "black-translucent",
+        },
         { property: "og:title", content: siteName },
         { property: "og:description", content: siteDescription },
         { property: "og:url", content: siteUrl },
@@ -62,7 +70,13 @@ export default defineNuxtConfig({
   },
   pwa: {
     registerType: "autoUpdate",
-    includeAssets: ["favicon.ico", "icon.png", "icon.svg", "pwa-192x192.png", "pwa-512x512.png"],
+    includeAssets: [
+      "favicon.ico",
+      "icon.png",
+      "icon.svg",
+      "pwa-192x192.png",
+      "pwa-512x512.png",
+    ],
     manifest: {
       id: siteBasePath,
       name: siteName,
