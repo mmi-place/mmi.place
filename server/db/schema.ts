@@ -1,4 +1,5 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { pgTable } from "drizzle-orm/pg-core";
 import {
   integer,
   jsonb,
@@ -8,14 +9,13 @@ import {
   timestamp,
 } from "drizzle-orm/pg-core";
 
-export const publicSchema = pgSchema("public");
 
-export const channels = publicSchema.table("channels", {
+export const channels = pgTable("channels", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
 });
 
-export const academicGroups = publicSchema.table("academic_groups", {
+export const academicGroups = pgTable("academic_groups", {
   id: serial("id").primaryKey(),
   yearCode: text("year_code").notNull(),
   yearLabel: text("year_label").notNull(),
@@ -25,7 +25,7 @@ export const academicGroups = publicSchema.table("academic_groups", {
   sortOrder: integer("sort_order").notNull(),
 });
 
-export const tools = publicSchema.table("tools", {
+export const tools = pgTable("tools", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   category: text("category").notNull(),
@@ -36,7 +36,7 @@ export const tools = publicSchema.table("tools", {
   icon: text("icon"),
 });
 
-export const messages = publicSchema.table("messages", {
+export const messages = pgTable("messages", {
   id: serial("id").primaryKey(),
   title: text("title").notNull(),
   content: text("content").notNull(),
@@ -60,7 +60,7 @@ export const messages = publicSchema.table("messages", {
   }),
 });
 
-export const planning = publicSchema.table("planning", {
+export const planning = pgTable("planning", {
   id: serial("id").primaryKey(),
   startAt: timestamp("start_at", {
     withTimezone: true,
@@ -77,7 +77,7 @@ export const planning = publicSchema.table("planning", {
   groupName: text("group_name").notNull(),
 });
 
-export const tasks = publicSchema.table("tasks", {
+export const tasks = pgTable("tasks", {
   id: serial("id").primaryKey(),
   moduleId: text("module_id").notNull(),
   title: text("title").notNull(),
